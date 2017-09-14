@@ -28,7 +28,7 @@ namespace NPlant.MetaModel.ClassDiagraming
             var context = ClassDiagramVisitorContext.Current;
             this.MetaModel = context.GetTypeMetaModel(this.ReflectedType);
 
-            if (context.ShowMembers)
+            if (context.ShowMembers || MemberVisibility.Any(d => d.Value))
                 LoadMembers(context);
 
             if (context.ShowMethods)
@@ -182,8 +182,8 @@ namespace NPlant.MetaModel.ClassDiagraming
             if (MemberVisibility.TryGetValue(name, out visibility))
                 return visibility;
 
-            // default to visible (i.e. if no specification is present, assume visible)
-            return true;
+            // default to hidden (i.e. if no specification is present, assume visible)
+            return false;
         }
 
         public TypeMetaModel MetaModel { get; private set; }

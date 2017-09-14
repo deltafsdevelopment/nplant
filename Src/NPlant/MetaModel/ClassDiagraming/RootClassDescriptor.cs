@@ -38,6 +38,14 @@ namespace NPlant.MetaModel.ClassDiagraming
             return this;
         }
 
+        public RootClassDescriptor<T> ShowMember<TMember>(Expression<Func<T, TMember>> expression)
+        {
+            var member = ReflectOn<T>.ForMember(expression);
+            MemberVisibility[member.Name] = true;
+
+            return this;
+        }
+
         public RootClassDescriptor<T> HideMember(string memberName)
         {
             MemberVisibility[memberName] = false;
@@ -45,7 +53,14 @@ namespace NPlant.MetaModel.ClassDiagraming
             return this;
         }
 
-        public ForMemberDescriptor<T> ForMember<TMember>(Expression<Func<T, TMember>> expression)
+        public RootClassDescriptor<T> ShowMember(string memberName)
+        {
+            MemberVisibility[memberName] = true;
+
+            return this;
+        }
+
+    public ForMemberDescriptor<T> ForMember<TMember>(Expression<Func<T, TMember>> expression)
         {
             return new ForMemberDescriptor<T>(this, ReflectOn<T>.ForMember(expression));
         }
